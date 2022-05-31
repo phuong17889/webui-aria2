@@ -17,17 +17,9 @@ RUN chmod +x /usr/local/bin/gosu
 # goreman supervisor install latest
 RUN curl -L https://github.com/mattn/goreman/releases/download/v0.3.11/goreman_v0.3.11_linux_amd64.tar.gz > goreman.tar.gz
 RUN tar xvf goreman.tar.gz && mv /goreman*/goreman /usr/local/bin/goreman && rm -R goreman*
-RUN touch /data/aria2.conf
-RUN chmod 0777 /data/aria2.conf
-RUN echo "max-download-result=100000" >> /data/aria2.conf
-RUN echo "max-concurrent-downloads=30" >> /data/aria2.conf
-RUN echo "log=/tmp/aria2c.log" >> /data/aria2.conf
-RUN echo "download-result=full" >> /data/aria2.conf
-RUN echo "continue=true" >> /data/aria2.conf
-RUN echo "allow-overwrite=true" >> /data/aria2.conf
 
 # goreman setup
-RUN echo "web: gosu dummy /bin/busybox httpd -f -p 8080 -h /webui-aria2\nbackend: gosu dummy /usr/bin/aria2c --enable-rpc --rpc-listen-all --dir=/data --conf-path=/data/aria2.conf" > Procfile
+RUN echo "web: gosu dummy /bin/busybox httpd -f -p 8080 -h /webui-aria2\nbackend: gosu dummy /usr/bin/aria2c --enable-rpc --rpc-listen-all --dir=/data --no-conf --max-download-result=100000 --download-result=full --continue --allow-overwrite" > Procfile
 
 # aria2 downloads directory
 VOLUME /data
