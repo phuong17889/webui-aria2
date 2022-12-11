@@ -1,4 +1,4 @@
-FROM debian:8
+FROM debian
 
 # less priviledge user, the id should map the user the downloaded files belongs to
 RUN groupadd -r dummy && useradd -r -g dummy dummy -u 1000
